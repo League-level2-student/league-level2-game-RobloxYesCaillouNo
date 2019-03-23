@@ -1,9 +1,10 @@
+
 import java.awt.Graphics;
 
-public class bombs extends Objects
+public class Bombs extends Objects
 {
 
-	public bombs(int x, int y, int width, int height) {
+	public Bombs(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		// TODO Auto-generated constructor stub
 	}
