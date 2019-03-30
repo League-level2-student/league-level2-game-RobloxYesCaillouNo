@@ -3,8 +3,7 @@
 import java.awt.Graphics;
 
 public class Crystal extends Objects {
-	boolean direction = true;
-	int num;
+		int place;
 	
 	public Crystal(int x, int y, int width, int height) {
 		super(x, y, width, height);

@@ -5,8 +5,9 @@ import javax.swing.JFrame;
 public class MainClass {
 	JFrame window = new JFrame();
 
-	final static int WIDTH = 2000;
-	final static int HEIGHT = 1000;
+	final static int WIDTH = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+	final static int HEIGHT = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+	
 	GamePanel gamePanel = new GamePanel();
 
 	public static void main(String[] args) {

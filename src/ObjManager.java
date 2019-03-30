@@ -47,7 +47,6 @@ public class ObjManager {
 	}
 
 	public void addBomb(Bombs bomb) {
-		bomblist.add(bomb);
 	}
 
 	public void addCrystal(Crystal crystal) {
@@ -56,12 +55,15 @@ public class ObjManager {
 
 	public void manageEnemies() {
 		if (System.currentTimeMillis() - itemTimer >= itemSpawnTime) {
-			Random randomItem = new Random();
-			int r = randomItem.nextInt(2);
-			if (r == 0) {
-				addBomb(new Bombs(1110, 980, 50, 50));
-			} else {
-				addCrystal(new Crystal(1110, 980, 50, 50));
+			switch (new Random().nextInt(2)) {
+			case 0:
+
+				bomblist.add(new Bombs(1110, 980, 50, 50));
+				break;
+
+			case 1:
+				crystallist.add(new Crystal(1110, 980, 50, 50));
+				break;
 			}
 			itemTimer = System.currentTimeMillis();
 		}
@@ -71,9 +73,9 @@ public class ObjManager {
 	public void checkCollision() {
 		for (Crystal a : crystallist) {
 
-			if (miner.collisionBox.intersects(a.collisionBox)) {
+			if (pickaxe.collisionBox.intersects(a.collisionBox)) {
 
-				score++;
+				score = score + 1;
 
 			}
 
@@ -91,6 +93,7 @@ public class ObjManager {
 		for (int i = 0; i < crystallist.size(); i++) {
 			if (crystallist.get(i).isAlive == false) {
 				crystallist.remove(i);
+
 			}
 
 		}
