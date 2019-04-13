@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
 	
+
 	int score;
 	int currentState = MENU_STATE;
 
@@ -58,17 +59,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	}
 
-	public void time() {
+	public void time() throws InterruptedException {
 		for (int i = 0; i < timeLeft; i++) {
-			try {
-				wait(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			wait(1000);
 			timeLeft = timeLeft - 1;
 		}
-
+		
 	}
 
 	public void updateMenuState() {
@@ -105,11 +101,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void drawGameState(Graphics g) {
-		g.setColor(Color.black);
+		g.setColor(Color.BLACK);
 		g.setFont(timerFont);
 		g.drawString("Time left: " + timeLeft, 700, 300);
+		g.setColor(Color.BLACK);
 		g.setFont(points);
-		g.drawString("Points: " + score, 180, 300);
+		g.drawString("Points: " + objectmanager.getScore(), 180, 300);
 		
 		g.drawImage(bgImg, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
 		objectmanager.draw(g);
@@ -117,12 +114,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public void drawEndState(Graphics g) {
 
-		if (timeLeft == 0 || objectmanager.getScore() < 30) {
+		if (timeLeft == 0 || objectmanager.getScore() < 25) {
 			g.setColor(Color.RED);
 			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(Color.YELLOW);
 			g.setFont(retryFont);
-			g.drawString("You mined " + objectmanager.getScore() + "/30 crystals!", 999, 110);
+			g.drawString("You mined " + objectmanager.getScore() + "/25 crystals!", 999, 110);
 
 		} else if (objectmanager.getScore() >= 30) {
 			g.setColor(Color.GREEN);
@@ -132,7 +129,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.drawString("Great Job!! You won!", 999, 110);
 
 		}
-
+		g.setColor(Color.BLACK);
 		g.drawString("Press ENTER to restart", 1099, 888);
 
 	}
@@ -171,8 +168,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println(e.getKeyCode());
-		if (e.getKeyCode() == 32) {
+		
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
 			currentState++;
 			if (currentState >= END_STATE) {
@@ -181,40 +178,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 				pick = new Pickaxe(1024, 700, 50, 50);
 				objectmanager = new ObjManager(miner, pick);
 			}
-
+			
+			
 			if (currentState == GAME_STATE) {
-				if (e.getKeyCode() == 39) {
-					pick.x += pick.miningInProgress;
+				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					pick.x -= pick.x;
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					pick.x += pick.x;
 				}
 				
-				if (e.getKeyCode() == 37) {
-				
-					
-					pick.x -= pick.miningInProgress;
-					
-					
-				/*	try {
-						wait(500);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} */
-					
-				}
 				if (timeLeft == 0) {
 					currentState = END_STATE;
 				}
 			}
 			if (currentState == MENU_STATE) {
-				if (e.getKeyCode() == 32) {
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					currentState = currentState + 1;
 				}
 			}
 		}
 		if (currentState == MENU_STATE) {
-			if (e.getKeyCode() == 16) {
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 				JOptionPane.showMessageDialog(null,
-						"Press RightArrow to mine. LeftArrow to pull pickaxe. Do not mine a single bomb. Mine at least 30 crystals");
+						"Press space to mine. Do not mine a single bomb. Mine at least 25 crystals");
 			}
 		}
 

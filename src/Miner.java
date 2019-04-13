@@ -12,7 +12,7 @@ public void update() {
 }
 
 public void draw(Graphics g) {
-	g.drawImage(GamePanel.minerImg, x-60, y, 222, height, null);
+	g.drawImage(GamePanel.minerImg, 300, y, 222, height, null);
 }
 	
 }

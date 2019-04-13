@@ -5,6 +5,7 @@ import java.util.Random;
 public class ObjManager {
 	Miner miner;
 	Pickaxe pickaxe;
+	
 	ArrayList<Crystal> crystallist = new ArrayList<Crystal>();
 	ArrayList<Bombs> bomblist = new ArrayList<Bombs>();
 	long itemTimer = 0;
@@ -21,6 +22,7 @@ public class ObjManager {
 		return score;
 	}
 
+	
 	public void update() {
 		miner.update();
 		pickaxe.update();
@@ -47,6 +49,7 @@ public class ObjManager {
 	}
 
 	public void addBomb(Bombs bomb) {
+		bomblist.add(bomb);
 	}
 
 	public void addCrystal(Crystal crystal) {
@@ -55,14 +58,15 @@ public class ObjManager {
 
 	public void manageEnemies() {
 		if (System.currentTimeMillis() - itemTimer >= itemSpawnTime) {
+			
 			switch (new Random().nextInt(2)) {
 			case 0:
-
-				bomblist.add(new Bombs(1110, 980, 50, 50));
+				
+				addBomb(new Bombs(1110, 980, 50, 50));
 				break;
 
 			case 1:
-				crystallist.add(new Crystal(1110, 980, 50, 50));
+				addCrystal(new Crystal(1110, 980, 50, 50));
 				break;
 			}
 			itemTimer = System.currentTimeMillis();
@@ -74,9 +78,10 @@ public class ObjManager {
 		for (Crystal a : crystallist) {
 
 			if (pickaxe.collisionBox.intersects(a.collisionBox)) {
-
+				
 				score = score + 1;
-
+				a.isAlive = false;
+				
 			}
 
 		}
@@ -84,6 +89,8 @@ public class ObjManager {
 			if (pickaxe.collisionBox.intersects(b.collisionBox)) {
 				miner.isAlive = false;
 				pickaxe.isAlive = false;
+				b.isAlive = false;
+				
 			}
 		}
 
