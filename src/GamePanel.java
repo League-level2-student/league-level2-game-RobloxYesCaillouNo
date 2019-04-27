@@ -18,8 +18,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Timer timer = new Timer(1000 / 60, this);
 	Miner miner = new Miner(980, 700, 100, 250);
 	Pickaxe pick = new Pickaxe(1024, 700, 50, 50);
-	int timeLeft = 45;
-
+	long startTime = System.currentTimeMillis();
+	long timeElapsed = 0;
+	long timeLeft = 75;
 	ObjManager objectmanager = new ObjManager(miner, pick);
 	public static BufferedImage minerImg;
 	public static BufferedImage bombImg;
@@ -31,11 +32,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font timerFont = new Font("Roboto", Font.PLAIN, 12);
 	Font points = new Font("Verdana", Font.PLAIN, 12);
 	Font winFont = new Font("Comic Sans", Font.ITALIC, 28);
+
 	final int MENU_STATE = 0;
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
-	
 
+	String l1 = "Press space to mine. Do not mine a single bomb. Mine at least 25 crystals. ";
+	String l2 = "Use arrow keys to move pickaxe around";
+	String t3xt = l1 + "\n" + l2;
 	int score;
 	int currentState = MENU_STATE;
 
@@ -59,12 +63,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	}
 
-	public void time() throws InterruptedException {
-		for (int i = 0; i < timeLeft; i++) {
-			wait(1000);
-			timeLeft = timeLeft - 1;
-		}
-		
+	public void timeRemaining() {
+		timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
+		timeLeft = 75 - timeElapsed;
+
 	}
 
 	public void updateMenuState() {
@@ -73,6 +75,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public void updateGameState() {
 		objectmanager.update();
+		timeRemaining();
 		objectmanager.manageEnemies();
 		objectmanager.checkCollision();
 		objectmanager.purgeObjects();
@@ -90,7 +93,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.fillRect(0, 0, 2000, 1000);
 		g.setColor(Color.red);
 		g.setFont(titleFont);
-		g.drawString("Press space to start!", 380, 360);
+		g.drawString("Press enter to start!", 380, 360);
 		g.setColor(Color.DARK_GRAY);
 		g.setFont(titleFont);
 		g.drawString("Game: Crystals n' Bombs", 404, 111);
@@ -101,14 +104,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void drawGameState(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.setFont(timerFont);
-		g.drawString("Time left: " + timeLeft, 700, 300);
-		g.setColor(Color.BLACK);
-		g.setFont(points);
-		g.drawString("Points: " + objectmanager.getScore(), 180, 300);
-		
+		timeRemaining();
 		g.drawImage(bgImg, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
+		g.setColor(Color.WHITE);
+		g.setFont(timerFont);
+		g.drawString("Time left: " + timeLeft, 40, 80);
+		g.setColor(Color.WHITE);
+		g.setFont(points);
+		g.drawString("Points: " + objectmanager.getScore(), 40, 50);
 		objectmanager.draw(g);
 	}
 
@@ -119,18 +122,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(Color.YELLOW);
 			g.setFont(retryFont);
-			g.drawString("You mined " + objectmanager.getScore() + "/25 crystals!", 999, 110);
+			g.drawString("You mined " + objectmanager.getScore() + "/25 crystals! Try again :[", 999, 110);
 
-		} else if (objectmanager.getScore() >= 30) {
+		} else if (objectmanager.getScore() >= 25 && timeLeft > 0) {
 			g.setColor(Color.GREEN);
 			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(Color.yellow);
 			g.setFont(winFont);
-			g.drawString("Great Job!! You won!", 999, 110);
+			g.drawString("Great Job!! You won! :DDD", 999, 110);
 
 		}
 		g.setColor(Color.BLACK);
-		g.drawString("Press ENTER to restart", 1099, 888);
+		g.drawString("Press ENTER to restart", 222, 444);
 
 	}
 
@@ -168,40 +171,37 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
 			currentState++;
 			if (currentState >= END_STATE) {
 				currentState = MENU_STATE;
 				miner = new Miner(980, 700, 100, 250);
-				pick = new Pickaxe(1024, 700, 50, 50);
+				pick = new Pickaxe(1060, 700, 50, 50);
 				objectmanager = new ObjManager(miner, pick);
 			}
-			
-			
-			if (currentState == GAME_STATE) {
-				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					pick.x -= pick.x;
-				}
-				else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					pick.x += pick.x;
-				}
-				
-				if (timeLeft == 0) {
-					currentState = END_STATE;
-				}
-			}
+
 			if (currentState == MENU_STATE) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					currentState = currentState + 1;
 				}
 			}
 		}
+		if (currentState == GAME_STATE) {
+
+			if (e.getKeyCode() == 37) {
+				pick.x -= pick.miningInProgress;
+
+			} else if (e.getKeyCode() == 39) {
+				pick.x += pick.miningInProgress;
+			}
+
+		}
+
 		if (currentState == MENU_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				JOptionPane.showMessageDialog(null,
-						"Press space to mine. Do not mine a single bomb. Mine at least 25 crystals");
+				JOptionPane.showMessageDialog(null, t3xt);
 			}
 		}
 

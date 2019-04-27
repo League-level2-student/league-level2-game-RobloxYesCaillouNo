@@ -5,9 +5,9 @@ public class Pickaxe extends Objects {
 	int miningInProgress;
 
 	public Pickaxe(int x, int y, int width, int height) {
-		super(300, y, width, height);
+		super(45, y, width, height);
 		// TODO Auto-generated constructor stub
-		miningInProgress = 100;
+		miningInProgress = 20;
 
 	}
 
@@ -17,8 +17,8 @@ public class Pickaxe extends Objects {
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(GamePanel.pickImg, x, y, 260, 260, null);
-		System.out.println(x);
+		g.drawImage(GamePanel.pickImg, x, 500, 100, 100, null);
+		// System.out.println(x);
 	}
 
 }

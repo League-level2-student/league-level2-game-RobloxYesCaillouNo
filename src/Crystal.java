@@ -7,19 +7,16 @@ public class Crystal extends Objects {
 	public Crystal(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		// TODO Auto-generated constructor stub
-	moving = 85;
+		moving = 11;
 	}
 
 	public void update() {
 		super.update();
 		y = y + moving;
 
-		if (y == 900) {
-			moving = 0;
-		}
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(GamePanel.crystalImg, x, y, width, height, null);
+		g.drawImage(GamePanel.crystalImg, x, y, 100, 100, null);
 	}
 }
