@@ -107,7 +107,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Press enter to start!", 380, 360);
 		g.setColor(Color.DARK_GRAY);
 		g.setFont(titleFont);
-		g.drawString("Game: Crystals n' Bombs", 404, 111);
+		g.drawString("Game: Mining Madness!", 404, 111);
 		g.setColor(Color.GREEN);
 		g.setFont(titleFont);
 		g.drawString("LShift for instructions/rules", 380, 480);
