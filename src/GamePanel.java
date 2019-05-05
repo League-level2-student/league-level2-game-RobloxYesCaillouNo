@@ -110,7 +110,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("Game: Mining Madness!", 404, 111);
 		g.setColor(Color.GREEN);
 		g.setFont(titleFont);
-		g.drawString("LShift for instructions/rules", 380, 480);
+		g.drawString("Left Shift for instructions/rules", 380, 480);
 
 	}
 
