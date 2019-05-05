@@ -9,7 +9,7 @@ public class ObjManager {
 	ArrayList<Crystal> crystallist = new ArrayList<Crystal>();
 	ArrayList<Bombs> bomblist = new ArrayList<Bombs>();
 	long itemTimer = 0;
-	int itemSpawnTime = 1500;
+	int itemSpawnTime = 300;
 	int score = 0;
 
 	public ObjManager(Miner miner, Pickaxe pickaxe) {
@@ -61,11 +61,11 @@ public class ObjManager {
 			switch (new Random().nextInt(2)) {
 			case 0:
 
-				addBomb(new Bombs(250, 20, 50, 50));
+				addBomb(new Bombs(new Random().nextInt(MainClass.WIDTH), 20, 100, 100));
 				break;
 
 			case 1:
-				addCrystal(new Crystal(250, 20, 50, 50));
+				addCrystal(new Crystal(new Random().nextInt(MainClass.WIDTH), 20, 100, 100));
 				break;
 			}
 			itemTimer = System.currentTimeMillis();
@@ -75,10 +75,9 @@ public class ObjManager {
 
 	public void checkCollision() {
 		for (Crystal a : crystallist) {
-			System.out.println("plus 1");
+			
 			if (pickaxe.collisionBox.intersects(a.collisionBox)) {
 
-				score = score + 1;
 				a.isAlive = false;
 
 			}
@@ -90,8 +89,7 @@ public class ObjManager {
 		}
 		for (Bombs b : bomblist) {
 			if (pickaxe.collisionBox.intersects(b.collisionBox)) {
-				miner.isAlive = false;
-				pickaxe.isAlive = false;
+
 				b.isAlive = false;
 			} else if (b.y >= MainClass.HEIGHT) {
 				b.isAlive = false;
@@ -99,6 +97,21 @@ public class ObjManager {
 
 		}
 
+		for (int i = 0; i < crystallist.size(); i++) {
+
+			if (pickaxe.collisionBox.intersects(crystallist.get(i).collisionBox)) {
+				crystallist.get(i).isAlive = false;
+				score++;
+			}
+		}
+		for (int i = 0; i < bomblist.size(); i++) {
+			if (pickaxe.collisionBox.intersects(bomblist.get(i).collisionBox)) {
+				bomblist.get(i).isAlive = false;
+				pickaxe.isAlive = false;
+				miner.isAlive = false;
+
+			}
+		}
 	}
 
 	public void purgeObjects() {

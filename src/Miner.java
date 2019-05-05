@@ -12,7 +12,7 @@ public class Miner extends Objects {
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(GamePanel.minerImg, 0, 500, 60, 80, null);
+		g.drawImage(GamePanel.minerImg, x, y, width, height, null);
 	}
 
 }
