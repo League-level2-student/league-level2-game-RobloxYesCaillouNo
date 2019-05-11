@@ -3,11 +3,11 @@ import java.awt.Graphics;
 
 public class Bombs extends Objects {
 	int movement;
-	
+
 	public Bombs(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		// TODO Auto-generated constructor stub
-		movement = 9;
+		movement = 7;
 	}
 
 	public void update() {
@@ -17,8 +17,7 @@ public class Bombs extends Objects {
 		} else if (x < 0) {
 			direction = true;
 		}
-	
-			
+
 		y = y + movement;
 
 	}

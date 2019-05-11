@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 public class MainClass {
 	JFrame window = new JFrame();
 
-	final static int WIDTH = 1300;
-	final static int HEIGHT = 650;
+	final static int WIDTH = 1500;
+	final static int HEIGHT = 750;
 
 	GamePanel gamePanel = new GamePanel();
 

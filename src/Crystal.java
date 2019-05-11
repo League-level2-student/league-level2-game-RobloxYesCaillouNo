@@ -4,10 +4,11 @@ import java.awt.Graphics;
 public class Crystal extends Objects {
 	int moving;
 	boolean direction = true;
+
 	public Crystal(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		// TODO Auto-generated constructor stub
-		moving = 10;
+		moving = 6;
 	}
 
 	public void update() {
@@ -17,11 +18,9 @@ public class Crystal extends Objects {
 		} else if (x < 0) {
 			direction = true;
 		}
-	
-			y = y + moving;
-		
-		
-		
+
+		y = y + moving;
+
 	}
 
 	public void draw(Graphics g) {

@@ -11,7 +11,7 @@ public class ObjManager {
 	long itemTimer = 0;
 	int itemSpawnTime = 300;
 	int score = 0;
-
+	int lives = 3;
 	public ObjManager(Miner miner, Pickaxe pickaxe) {
 		// TODO Auto-generated constructor stub
 		this.miner = miner;
@@ -75,7 +75,7 @@ public class ObjManager {
 
 	public void checkCollision() {
 		for (Crystal a : crystallist) {
-			
+
 			if (pickaxe.collisionBox.intersects(a.collisionBox)) {
 
 				a.isAlive = false;
@@ -107,8 +107,13 @@ public class ObjManager {
 		for (int i = 0; i < bomblist.size(); i++) {
 			if (pickaxe.collisionBox.intersects(bomblist.get(i).collisionBox)) {
 				bomblist.get(i).isAlive = false;
+				lives--;
+				
+				if (lives <= 0) {
 				pickaxe.isAlive = false;
 				miner.isAlive = false;
+				}
+				
 
 			}
 		}
