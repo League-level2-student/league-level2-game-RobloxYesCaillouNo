@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	long startTime = System.currentTimeMillis();
 	long timeElapsed = 0;
-	long timeLeft = 85;
+	long timeLeft = 80;
 
 	ObjManager objectmanager = new ObjManager(miner, pick);
 	public static BufferedImage minerImg;
@@ -30,21 +30,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage crystalImg;
 	public static BufferedImage pickImg;
 	public static BufferedImage winImg;
-	public static BufferedImage deathImg;
 	Font titleFont = new Font("Roboto", Font.BOLD, 48);
-	Font retryFont = new Font("Comic Sans", Font.ITALIC, 38);
+	Font retryFont = new Font("Arial", Font.ITALIC, 38);
 	Font timerFont = new Font("Roboto", Font.PLAIN, 12);
-	Font pointsOrLives = new Font("Verdana", Font.PLAIN, 12);
-	Font winFont = new Font("Comic Sans", Font.BOLD, 50);
-	
+	Font points = new Font("Verdana", Font.PLAIN, 12);
+	Font winFont = new Font("Comic Sans", Font.ITALIC, 28);
 
 	final int MENU_STATE = 0;
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
 
-	String l1 = "Press space to mine. Do not mine a single bomb. Mine at least 25 crystals. ";
-	String l2 = "Use arrow keys to move pickaxe around";
-	String t3xt = l1 + "\n" + l2;
+	String l1 = "The objective is simple: Press space to mine. ";
+	String l2 = "Do not mine a single bomb. Mine at least 25 crystals.";
+	String l3 = "Use arrow keys to move pickaxe around";
+	String t3xt = l1 + "\n" + l2 + "\n" + l3;
 	int score;
 	int currentState = MENU_STATE;
 
@@ -56,7 +55,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			bgImg = ImageIO.read(this.getClass().getResourceAsStream("bgImage.jpg"));
 			pickImg = ImageIO.read(this.getClass().getResourceAsStream("pickaxe.png"));
 			winImg = ImageIO.read(this.getClass().getResourceAsStream("StockPHOTOYouwin.jpg"));
-			deathImg = ImageIO.read(this.getClass().getResourceAsStream("DeathImg.png"));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -72,7 +70,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
 	public void timeRemaining() {
 		timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
-		timeLeft = 85 - timeElapsed;
+		timeLeft = 80 - timeElapsed;
 
 	}
 
@@ -83,7 +81,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void updateGameState() {
 		objectmanager.update();
 		timeRemaining();
-		
 		objectmanager.manageEnemies();
 		objectmanager.checkCollision();
 		objectmanager.purgeObjects();
@@ -125,28 +122,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setFont(timerFont);
 		g.drawString("Time left: " + timeLeft, 40, 80);
 		g.setColor(Color.WHITE);
-		g.setFont(pointsOrLives);
+		g.setFont(points);
 		g.drawString("Points: " + objectmanager.getScore(), 40, 50);
-		g.setColor(Color.WHITE);
-		g.drawString("Lives: " + objectmanager.lives, 40, 111);
-		
 		objectmanager.draw(g);
 	}
 
 	public void drawEndState(Graphics g) {
 
 		if (timeLeft <= 0 || objectmanager.getScore() < 25) {
-			g.drawImage(deathImg, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
-			
-			g.setColor(Color.RED);
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, MainClass.WIDTH, MainClass.HEIGHT);
+			g.setColor(Color.YELLOW);
 			g.setFont(retryFont);
-			g.drawString("You mined " + objectmanager.getScore() + "/25 crystals! Try again :[", 80, 110);
+			g.drawString("You mined " + objectmanager.getScore() + "/25 crystals! Try again :[", 40, 110);
 
 		} else if (objectmanager.getScore() >= 25) {
 			g.drawImage(winImg, 0, 0, MainClass.WIDTH, MainClass.HEIGHT, null);
-			g.setColor(Color.CYAN);
+			g.fillRect(0, 0, MainClass.WIDTH, MainClass.HEIGHT);
+			g.setColor(Color.yellow);
 			g.setFont(winFont);
-			g.drawString("Great Job!! You won! :DDD", 80, 110);
+			g.drawString("Great Job!! You won! :DDD", 40, 110);
 
 		}
 		g.setColor(Color.YELLOW);
