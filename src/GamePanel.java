@@ -42,9 +42,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
 
-	String l1 = "Press space to mine. Do not mine a single bomb. Mine at least 25 crystals. ";
-	String l2 = "Use arrow keys to move pickaxe around";
-	String t3xt = l1 + "\n" + l2;
+	String l1 = "The objective is simple: Press space to mine. ";
+	String l2 = "Do not mine a single bomb. Mine at least 25 crystals.";
+	String l3 = "Use arrow keys to move pickaxe around";
+	String t3xt = l1 + "\n" + l2 + "\n" + l3;
 	int score;
 	int currentState = MENU_STATE;
 
